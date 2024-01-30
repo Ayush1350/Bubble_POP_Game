@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var count = 0;
+      var over = 0; 
+      var sound = new Audio("sound.mp3");
+
+      function displayRound() {
+
+        over++;
+
+        var charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var randomIndex = Math.floor(Math.random() * charSet.length);
+        var randomChar = charSet.charAt(randomIndex);
+        var rounds = document.querySelectorAll(".round");
+        
+
+        var randomColor =
+          "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+        var round = document.createElement("div");
+        round.className = "round";
+        round.textContent = randomChar;
+        round.style.display = "flex";
+        round.style.alignItems = "center";
+        round.style.justifyContent = "center";
+        round.style.position = "absolute";
+        round.style.backgroundColor = randomColor;
+        round.style.height = "100px";
+        round.style.width = "100px";
+        round.style.borderRadius = "50%";
+
+        var maxX = window.innerWidth - 100;
+        var maxY = window.innerHeight - 100;
+        round.style.left = Math.floor(Math.random() * maxX) + "px";
+        round.style.top = Math.floor(Math.random() * maxY) + "px";
+
+
+        document.addEventListener("keydown", function (event) {
+          var pressedKey = event.key.toUpperCase();         
+
+          for (var i = 0; i < rounds.length; i++) {
+            if (rounds[i].innerText === pressedKey) {
+              document.body.removeChild(rounds[i]);
+              over--;
+              count++;
+              sound.play();
+              document.getElementById("lbl1").innerHTML = count;
+              break;
+            }
+          }
+        });
+
+        document.body.appendChild(round);
+
+        if( over == 15) {
+          alert("Game Over! You Can Not Popped 15 circles.");
+          location.reload();
+        }
+      }
+
+      
+
+      var lbl2 = document.createElement("label");
+      lbl2.innerText = "Count : ";
+      document.body.appendChild(lbl2);
+
+      var lbl = document.createElement("label");
+      lbl.id = "lbl1";
+      lbl.innerHTML = count;
+      document.body.appendChild(lbl);
+
+      setInterval(displayRound, 1000);
+    </script>
+  </body>
+</html>
